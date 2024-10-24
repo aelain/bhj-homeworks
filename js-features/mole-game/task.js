@@ -13,16 +13,18 @@ for (let i = 1; i <= 9; i++) {
       lost.textContent++;
     }
 
-    if (dead.textContent === '10') {
-      alert('Победа!');
+    function endGame(message) {
+      alert(message);
       dead.textContent = '0';
       lost.textContent = '0';
     }
 
+    if (dead.textContent === '10') {
+      endGame('Победа!');
+    }
+
     if (lost.textContent === '5') {
-      alert('Вы проиграли!');
-      dead.textContent = '0';
-      lost.textContent = '0';
+      endGame('Вы проиграли!');
     }
   };
 }
