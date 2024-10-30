@@ -4,6 +4,8 @@ class Game {
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
+    this.timer = container.querySelector('.status__timer');
+    this.timerId = null;
 
     this.reset();
 
@@ -17,14 +19,19 @@ class Game {
   }
 
   registerEvents() {
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода символа вызываем this.success()
-      При неправильном вводе символа - this.fail();
-      DOM-элемент текущего символа находится в свойстве this.currentSymbol.
-     */
+    document.addEventListener('keyup', event => {
+      const symbol = event.key;
+
+      if (symbol === 'Shift' || symbol === 'Control' || symbol === 'Alt') {
+        return;
+      }
+
+      if (symbol.toLowerCase() === this.currentSymbol.textContent.toLowerCase()) {
+        return this.success();
+      }
+
+      return this.fail();
+    });
   }
 
   success() {
@@ -53,9 +60,11 @@ class Game {
   }
 
   setNewWord() {
+    clearInterval(this.timerId);
     const word = this.getWord();
 
     this.renderWord(word);
+    this.renderTimer(word);
   }
 
   getWord() {
@@ -70,7 +79,8 @@ class Game {
         'popcorn',
         'cinema',
         'love',
-        'javascript'
+        'javascript',
+        'я люблю kitkat'
       ],
       index = Math.floor(Math.random() * words.length);
 
@@ -87,6 +97,16 @@ class Game {
     this.wordElement.innerHTML = html;
 
     this.currentSymbol = this.wordElement.querySelector('.symbol_current');
+  }
+
+  renderTimer(word) {
+    this.timer.textContent = word.length;
+    this.timerId = setInterval(() => {
+      this.timer.textContent--;
+      if (this.timer.textContent === '0') {
+        this.fail();
+      }
+    }, 1000);
   }
 }
 
