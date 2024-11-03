@@ -1,19 +1,28 @@
-const reveal = document.querySelector('.reveal');
+class Reveal {
+  constructor(container) {
+    this.container = container;
+    this.checkScroll();
+  }
 
-function isVisible(element) {
-  if (element.getBoundingClientRect().bottom < 0) {
-    return false;
+  checkScroll() {
+    function isVisible(element) {
+      if (element.getBoundingClientRect().bottom < 0) {
+        return false;
+      }
+      if (element.getBoundingClientRect().top > window.innerHeight) {
+        return false;
+      }
+      return true;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (isVisible(this.container)) {
+        this.container.classList.add('reveal_active');
+      } else {
+        this.container.classList.remove('reveal_active');
+      }
+    });
   }
-  if (element.getBoundingClientRect().top > window.innerHeight) {
-    return false;
-  }
-  return true;
 }
 
-window.addEventListener('scroll', function () {
-  if (isVisible(reveal)) {
-    reveal.classList.add('reveal_active');
-  } else {
-    reveal.classList.remove('reveal_active');
-  }
-});
+new Reveal(document.querySelector('.reveal'));
