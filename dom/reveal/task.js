@@ -1,6 +1,6 @@
 class Reveal {
-  constructor(container) {
-    this.container = container;
+  constructor(element) {
+    this.element = element;
     this.checkScroll();
   }
 
@@ -16,13 +16,13 @@ class Reveal {
     }
 
     window.addEventListener('scroll', () => {
-      if (isVisible(this.container)) {
-        this.container.classList.add('reveal_active');
+      if (isVisible(this.element)) {
+        this.element.classList.add('reveal_active');
       } else {
-        this.container.classList.remove('reveal_active');
+        this.element.classList.remove('reveal_active');
       }
     });
   }
 }
 
-new Reveal(document.querySelector('.reveal'));
+document.querySelectorAll('.reveal').forEach(element => new Reveal(element));
