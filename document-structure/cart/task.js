@@ -30,19 +30,19 @@ products.forEach(product => {
     const count = productQuantityValue.textContent;
     const id = product.dataset.id;
     const cartProductList = cartProducts.querySelectorAll('.cart__product');
-    
-    if (Array.from(cartProductList).findIndex(cartProduct => cartProduct.dataset.id === id) !== -1) {
-      cartProductList.forEach(cartProduct => {
-        if (cartProduct.dataset.id === id) {
-          const cartProductCount = cartProduct.querySelector('.cart__product-count');
-          const currentCount = Number(cartProductCount.textContent.trim());
-          const addCount = Number(count.trim());
-          cartProductCount.textContent = currentCount + addCount;
-          return;
-        }
-      });
-    } else {
-      addProduct(id, image, count);
+
+    if (cartProductList) {
+      const productInCart = Array.from(cartProductList).find(cartProduct => cartProduct.dataset.id === id);
+
+      if (productInCart) {
+        const cartProductCount = productInCart.querySelector('.cart__product-count');
+        const currentCount = Number(cartProductCount.textContent.trim());
+        const addCount = Number(count.trim());
+        cartProductCount.textContent = currentCount + addCount;
+        return;
+      } else {
+        addProduct(id, image, count);
+      }
     }
   });
 });

@@ -1,31 +1,22 @@
 const form = document.querySelector('form');
 const input = document.querySelector('input');
 const tasksList = document.querySelector('.tasks__list');
+const tasksStorage = JSON.parse(localStorage.getItem('tasks')) || [];
 
 function createTask(text) {
-  const task = document.createElement('div');
-  task.className = 'task';
-  task.innerHTML = `<div class="task__title">${text}</div><a href="#" class="task__remove">&times;</a>`;
-  tasksList.append(task);
-  localStorage.setItem(`task_${text}`, text);
-  return task;
+  const taskElement = document.createElement('div');
+  taskElement.className = 'task';
+  taskElement.innerHTML = `<div class="task__title">${text}</div><a href="#" class="task__remove">&times;</a>`;
+  tasksList.append(taskElement);
+  return taskElement;
+}
+
+if (tasksStorage) {
+  tasksStorage.forEach(item => createTask(item));
 }
 
 function includesTask(text) {
-  const values = Object.values(localStorage);
-  for (let value of values) {
-    if (value === text) {
-      return true;
-    }
-  }
-  return false;
-}
-
-const keys = Object.keys(localStorage);
-for (let key of keys) {
-  if (key.includes('task_')) {
-    createTask(localStorage.getItem(key));
-  }
+  return tasksStorage.some(item => item === text);
 }
 
 if (document.querySelector('.task__remove')) {
@@ -33,8 +24,10 @@ if (document.querySelector('.task__remove')) {
 
   taskRemoves.forEach(taskRemove => taskRemove.addEventListener('click', event => {
     event.preventDefault();
+    const taskIndex = tasksStorage.indexOf(taskRemove.previousElementSibling.textContent);
+    tasksStorage.splice(taskIndex, 1);
+    localStorage.setItem('tasks', JSON.stringify(tasksStorage));
     taskRemove.closest('.task').remove();
-    localStorage.removeItem(`task_${taskRemove.previousElementSibling.textContent}`);
   }));
 }
 
@@ -44,12 +37,16 @@ form.addEventListener('submit', event => {
 
   if (text && !includesTask(text)) {
     const task = createTask(text);
+    tasksStorage.push(text);
+    localStorage.setItem('tasks', JSON.stringify(tasksStorage));
     const taskRemove = task.querySelector('.task__remove');
 
     taskRemove.addEventListener('click', event => {
       event.preventDefault();
+      const taskIndex = tasksStorage.indexOf(text);
+      tasksStorage.splice(taskIndex, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasksStorage));
       taskRemove.closest('.task').remove();
-      localStorage.removeItem(`task_${text}`);
     });
   }
 
