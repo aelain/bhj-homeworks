@@ -45,3 +45,7 @@
   display: block;
   text-align: center;
 }
+
+.welcome__title {
+  margin: 0 0 20px 0;
+}
