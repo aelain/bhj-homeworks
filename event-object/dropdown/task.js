@@ -7,7 +7,7 @@ dropdowns.forEach(function (dropdown) {
   const dropdownLinks = dropdown.querySelectorAll('.dropdown__link');
 
   dropdownLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
+    link.addEventListener('click', function (event) {
       this.classList.toggle('dropdown__list_active');
       dropdownValue.textContent = link.textContent;
       event.preventDefault();
