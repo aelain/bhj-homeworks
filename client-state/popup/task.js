@@ -7,9 +7,8 @@ if (!document.cookie.includes('modal=close')) {
 
 function closeModal() {
   modal.classList.remove('modal_active');
-  const date = 'Tue, 19 Jan 2038 03:14:07 GMT';
-  document.cookie = 'modal=close';
-  document.cookie = 'expires=' + encodeURIComponent(date);
+  const date = 31536000;
+  document.cookie = 'modal=close; max-age=' + encodeURIComponent(date);
 }
 
 modalClose.addEventListener('click', closeModal);

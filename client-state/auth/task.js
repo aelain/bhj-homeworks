@@ -17,7 +17,7 @@ if (localStorage.getItem('id')) {
 }
 
 function getData(event) {
-  const data = JSON.parse(event.target.response);
+  const data = event.target.response;
   if (data.success) {
     localStorage.setItem('id', data['user_id']);
     showWelcome();
@@ -31,6 +31,7 @@ function submitForm() {
   const request = new XMLHttpRequest();
   request.open('POST', 'https://students.netoservices.ru/nestjs-backend/auth');
   request.addEventListener('load', event => getData(event));
+  request.responseType = 'json';
   request.send(formData);
 }
 

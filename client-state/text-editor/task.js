@@ -7,12 +7,10 @@ function autosave() {
 
 function resetEditor() {
   editor.value = '';
-  autosave();
+  sessionStorage.removeItem('editor');
 }
 
-if (sessionStorage.getItem('editor')) {
-  editor.value = sessionStorage.getItem('editor');
-}
+editor.value = sessionStorage.getItem('editor');
 
 editor.addEventListener('input', autosave);
 btnReset.addEventListener('click', resetEditor);
